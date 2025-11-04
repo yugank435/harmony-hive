@@ -1,5 +1,7 @@
 import { useState } from "react";
 
+const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || 'http://localhost:3000';
+
 function showPopup(message, redirect = false) {
   const popup = document.createElement("div");
   popup.textContent = message;
@@ -39,7 +41,7 @@ export default function AuthCard() {
       : { email, password };
 
     try {
-      const res = await fetch(`http://localhost:3000${endpoint}`, {
+      const res = await fetch(`${API_BASE_URL}/api${endpoint}`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(body),

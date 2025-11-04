@@ -21,12 +21,13 @@ export default function Room() {
   const adminProgressSenderRef = useRef(null); // used by admin to send PROGRESS_UPDATE
   const endMonitorRef = useRef(null);
   const wsRef = useRef(null);
-  const API_KEY = import.meta.env.VITE_GOOGLE_API_KEY;;
+  const API_KEY = import.meta.env.VITE_GOOGLE_API_KEY;
+  const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || 'http://localhost:3000';
 
   // Get current room ID
   async function getCurrentRoomId() {
     const token = localStorage.getItem("token");
-    const res = await fetch("http://localhost:3000/user/current-room", {
+    const res = await fetch(`${API_BASE_URL}/api/user/current-room`, {
       method: "GET",
       headers: {
         Authorization: token ? `Bearer ${token}` : "",
@@ -45,7 +46,7 @@ export default function Room() {
   const fetchQueue = async (roomIdParam) => {
     if (!roomIdParam) return [];
     const token = localStorage.getItem("token");
-    const queueRes = await fetch(`http://localhost:3000/room/queue?id=${roomIdParam}`, {
+    const queueRes = await fetch(`${API_BASE_URL}/api/room/queue?id=${roomIdParam}`, {
       method: "GET",
       headers: { Authorization: `Bearer ${token}` },
     });
@@ -62,7 +63,7 @@ export default function Room() {
   const checkAdminStatus = async (roomId) => {
     try {
       const token = localStorage.getItem("token");
-      const res = await fetch(`http://localhost:3000/room/is-admin/${roomId}`, {
+      const res = await fetch(`${API_BASE_URL}/api/room/is-admin/${roomId}`, {
         method: "GET",
         headers: {
           Authorization: token ? `Bearer ${token}` : "",
@@ -431,7 +432,7 @@ export default function Room() {
       };
 
       const token = localStorage.getItem("token");
-      const addRes = await fetch(`http://localhost:3000/room/addsong`, {
+      const addRes = await fetch(`${API_BASE_URL}/api/room/addsong`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -505,7 +506,7 @@ export default function Room() {
       try {
         const token = localStorage.getItem("token");
         const queueRes = await fetch(
-          `http://localhost:3000/room/queue?id=${roomInfo.id}`,
+          `${API_BASE_URL}/api/room/queue?id=${roomInfo.id}`,
           { headers: { Authorization: `Bearer ${token}` } }
         );
         if (queueRes.ok) {
@@ -530,7 +531,7 @@ export default function Room() {
 
       let delRes;
       try {
-        delRes = await fetch("http://localhost:3000/room/removesong", {
+        delRes = await fetch(`${API_BASE_URL}/api/room/removesong`, {
           method: "DELETE",
           headers: {
             Authorization: token ? `Bearer ${token}` : "",
@@ -623,7 +624,7 @@ export default function Room() {
 
     try {
       const token = localStorage.getItem("token");
-      const res = await fetch("http://localhost:3000/room/move-to-top", {
+      const res = await fetch(`${API_BASE_URL}/api/room/move-to-top`, {
         method: "PUT",
         headers: {
           "Content-Type": "application/json",
@@ -660,7 +661,7 @@ export default function Room() {
         const token = localStorage.getItem("token");
         const roomId = await getCurrentRoomId();
         if (roomId) {
-          const roomRes = await fetch(`http://localhost:3000/room/details/${roomId}`, {
+          const roomRes = await fetch(`${API_BASE_URL}/api/room/details/${roomId}`, {
             method: "GET",
             headers: {
               Authorization: token ? `Bearer ${token}` : "",
@@ -693,7 +694,7 @@ export default function Room() {
 
     try {
       const token = localStorage.getItem("token");
-      const res = await fetch("http://localhost:3000/room/leave", {
+      const res = await fetch(`${API_BASE_URL}/api/room/leave`, {
         method: "PUT",
         headers: {
           Authorization: token ? `Bearer ${token}` : "",
